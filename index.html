@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CutSong - 오디오 구간 편집기</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎵 CutSong</h1>
+            <p>원하는 오디오 구간을 선택하고 저장하세요</p>
+        </header>
+
+        <main>
+            <div class="upload-section">
+                <div class="upload-area" id="uploadArea">
+                    <div class="upload-content">
+                        <div class="upload-icon">🎧</div>
+                        <h3>오디오 파일을 업로드하세요</h3>
+                        <p>MP3, WAV, M4A, AAC, OGG 파일 지원 (최대 100MB)</p>
+                        <div class="upload-note">
+                            <small>💡 파일을 여기에 드래그하거나 버튼을 클릭하세요</small>
+                        </div>
+                        <input type="file" id="audioInput" accept="audio/*" hidden>
+                        <button class="upload-btn" onclick="document.getElementById('audioInput').click()">
+                            파일 선택
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="audio-section" id="audioSection" style="display: none;">
+                <div class="audio-info">
+                    <h3 id="fileName">파일명</h3>
+                    <div class="audio-details">
+                        <span id="duration">00:00</span> | 
+                        <span id="fileSize">0 MB</span>
+                    </div>
+                </div>
+
+                <div class="waveform-container">
+                    <canvas id="waveformCanvas"></canvas>
+                    <div class="selection-overlay" id="selectionOverlay"></div>
+                </div>
+
+                <div class="controls">
+                    <div class="playback-controls">
+                        <button id="playBtn" class="control-btn">
+                            <span class="play-icon">▶️</span>
+                        </button>
+                        <button id="pauseBtn" class="control-btn" style="display: none;">
+                            <span class="pause-icon">⏸️</span>
+                        </button>
+                        <button id="stopBtn" class="control-btn">
+                            <span class="stop-icon">⏹️</span>
+                        </button>
+                    </div>
+
+                    <div class="time-controls">
+                        <div class="time-input-group">
+                            <label>시작 시간:</label>
+                            <input type="number" id="startTime" min="0" step="0.1" placeholder="0.0">
+                            <span>초</span>
+                        </div>
+                        <div class="time-input-group">
+                            <label>종료 시간:</label>
+                            <input type="number" id="endTime" min="0" step="0.1" placeholder="0.0">
+                            <span>초</span>
+                        </div>
+                    </div>
+
+                    <div class="action-controls">
+                        <button id="previewBtn" class="action-btn preview-btn">
+                            🎧 선택 구간 미리듣기
+                        </button>
+                        <button id="downloadBtn" class="action-btn download-btn">
+                            💾 선택 구간 다운로드
+                        </button>
+                    </div>
+                </div>
+
+                <div class="progress-section" id="progressSection" style="display: none;">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <p id="progressText">처리 중...</p>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>🎵 스프링데일뮤직</p>
+            <div class="store-links">
+                <a href="https://smartstore.naver.com/springdalem" target="_blank" class="store-btn naver-btn">
+                    <div class="store-icon">🛒</div>
+                    <div class="store-info">
+                        <div class="store-name">네이버 스마트스토어</div>
+                        <div class="store-desc">정품 악기 & 음향장비</div>
+                    </div>
+                </a>
+                <a href="https://link.coupang.com/re/SHOPPAGESHAREVID?pageKey=A01002259&sourceType2=brandstore_share_tr&title=%EC%8A%A4%ED%94%84%EB%A7%81%EB%8D%B0%EC%9D%BC%EB%AE%A4%EC%A7%81&destUrl=https%3A%2F%2Fshop.coupang.com%2Fvid%2FA01002259%3Fsource%3Dbrandstore_share_tr" target="_blank" class="store-btn coupang-btn">
+                    <div class="store-icon">📦</div>
+                    <div class="store-info">
+                        <div class="store-name">쿠팡 스토어</div>
+                        <div class="store-desc">빠른배송 음악용품</div>
+                    </div>
+                </a>
+            </div>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html> 
