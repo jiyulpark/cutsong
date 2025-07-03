@@ -88,6 +88,14 @@ header p {
     font-size: 0.9rem;
 }
 
+.mobile-only {
+    display: none;
+}
+
+.desktop-only {
+    display: inline;
+}
+
 .upload-btn {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
@@ -437,6 +445,37 @@ footer p {
     
     .upload-area {
         padding: 40px 20px;
+        cursor: pointer;
+        -webkit-tap-highlight-color: rgba(102, 126, 234, 0.2);
+    }
+    
+    .upload-area:active {
+        transform: scale(0.98);
+        background: linear-gradient(135deg, #f0f2ff 0%, #e0e5ff 100%);
+    }
+    
+    .upload-btn {
+        padding: 18px 50px;
+        font-size: 1.2rem;
+        width: 100%;
+        max-width: 300px;
+        margin-top: 20px;
+    }
+    
+    .upload-note {
+        display: block;
+    }
+    
+    .desktop-only {
+        display: none;
+    }
+    
+    .mobile-only {
+        display: inline;
+    }
+    
+    .upload-content p {
+        margin-bottom: 25px;
     }
     
     .audio-section {
@@ -483,6 +522,30 @@ footer p {
     
     .upload-content h3 {
         font-size: 1.5rem;
+    }
+    
+    .upload-btn {
+        padding: 20px 60px;
+        font-size: 1.3rem;
+        width: 100%;
+        max-width: none;
+        margin-top: 25px;
+    }
+    
+    .upload-area {
+        padding: 50px 20px;
+        cursor: pointer;
+        -webkit-tap-highlight-color: rgba(102, 126, 234, 0.2);
+    }
+    
+    .upload-area:active {
+        transform: scale(0.98);
+        background: linear-gradient(135deg, #f0f2ff 0%, #e0e5ff 100%);
+    }
+    
+    .upload-content p {
+        font-size: 1rem;
+        margin-bottom: 30px;
     }
     
     .control-btn {

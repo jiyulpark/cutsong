@@ -99,6 +99,14 @@ class AudioCutter {
         // File upload
         this.audioInput.addEventListener('change', (e) => this.handleFileSelect(e));
         
+        // Upload area click (모바일 친화적)
+        this.uploadArea.addEventListener('click', (e) => {
+            // 버튼이 아닌 영역을 클릭했을 때만 파일 선택
+            if (e.target.tagName !== 'BUTTON' && e.target.tagName !== 'INPUT') {
+                this.audioInput.click();
+            }
+        });
+        
         // Drag and drop
         this.uploadArea.addEventListener('dragover', (e) => this.handleDragOver(e));
         this.uploadArea.addEventListener('dragleave', (e) => this.handleDragLeave(e));
