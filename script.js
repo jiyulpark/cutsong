@@ -41,6 +41,7 @@ class AudioCutter {
         this.uploadArea = document.getElementById('uploadArea');
         this.uploadBtn = document.getElementById('uploadBtn');
         this.audioInput = document.getElementById('audioInput');
+        this.modernFileBtn = document.getElementById('modernFileBtn');
         this.audioSection = document.getElementById('audioSection');
         this.fileName = document.getElementById('fileName');
         this.duration = document.getElementById('duration');
@@ -59,6 +60,9 @@ class AudioCutter {
         this.progressText = document.getElementById('progressText');
         
         this.canvasCtx = this.waveformCanvas.getContext('2d');
+        
+        // 🚀 File System Access API 지원 확인
+        this.checkFileSystemAccessSupport();
     }
 
     async initializeAudioContext() {
@@ -114,6 +118,11 @@ class AudioCutter {
         
         // File upload
         this.audioInput.addEventListener('change', (e) => this.handleFileSelect(e));
+        
+        // 🚀 Modern File System Access API 버튼
+        if (this.modernFileBtn) {
+            this.modernFileBtn.addEventListener('click', () => this.handleModernFileSelect());
+        }
         
         // File input change event only (button clicks handled by global listener)
         
@@ -1054,6 +1063,54 @@ class AudioCutter {
         if (bytes === 0) return '0 Bytes';
         const i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
         return Math.round(bytes / Math.pow(1024, i) * 100) / 100 + ' ' + sizes[i];
+    }
+
+    // 🚀 File System Access API 지원 확인
+    checkFileSystemAccessSupport() {
+        if ('showOpenFilePicker' in window) {
+            // File System Access API 지원 - 고급 파일 선택 버튼 표시
+            this.modernFileBtn.style.display = 'inline-block';
+            console.log('✅ File System Access API 지원됨 - 고급 파일 선택 사용 가능');
+        } else {
+            console.log('❌ File System Access API 미지원 - 기본 파일 선택만 사용');
+        }
+    }
+
+    // 🚀 Modern File System Access API를 사용한 파일 선택
+    async handleModernFileSelect() {
+        try {
+            // 사용자 상호작용으로 AudioContext 활성화
+            await this.ensureAudioContextActive();
+
+            // File System Access API 옵션 설정
+            const pickerOpts = {
+                types: [
+                    {
+                        description: '오디오 파일',
+                        accept: {
+                            'audio/*': ['.mp3', '.wav', '.m4a', '.aac', '.ogg', '.flac']
+                        }
+                    }
+                ],
+                excludeAcceptAllOption: true,
+                multiple: false
+            };
+
+            // 🎯 새로운 파일 선택 API 사용
+            const [fileHandle] = await window.showOpenFilePicker(pickerOpts);
+            const file = await fileHandle.getFile();
+            
+            console.log('🚀 Modern API로 파일 선택됨:', file.name);
+            this.processFile(file);
+            
+        } catch (error) {
+            if (error.name === 'AbortError') {
+                console.log('파일 선택이 취소되었습니다.');
+            } else {
+                console.error('Modern 파일 선택 오류:', error);
+                alert('파일 선택 중 오류가 발생했습니다. 일반 파일 선택을 사용해주세요.');
+            }
+        }
     }
 }
 
