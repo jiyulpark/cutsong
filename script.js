@@ -1065,14 +1065,50 @@ class AudioCutter {
         return Math.round(bytes / Math.pow(1024, i) * 100) / 100 + ' ' + sizes[i];
     }
 
-    // 🚀 File System Access API 지원 확인
+    // 📱 모바일 디바이스 감지
+    isMobileDevice() {
+        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 
+               ('ontouchstart' in window) || 
+               (window.screen.width <= 768);
+    }
+
+    // 🚀 File System Access API 지원 확인 및 디바이스별 버튼 표시
     checkFileSystemAccessSupport() {
-        if ('showOpenFilePicker' in window) {
-            // File System Access API 지원 - 고급 파일 선택 버튼 표시
-            this.modernFileBtn.style.display = 'inline-block';
-            console.log('✅ File System Access API 지원됨 - 고급 파일 선택 사용 가능');
+        const isMobile = this.isMobileDevice();
+        const hasModernAPI = 'showOpenFilePicker' in window;
+        
+        if (isMobile) {
+            // 📱 모바일: 고급 파일 선택만 표시 (API 지원 시)
+            if (hasModernAPI) {
+                this.modernFileBtn.style.display = 'inline-block';
+                this.modernFileBtn.innerHTML = '📁 파일 선택';
+                this.hideTraditionalFileButton();
+                console.log('📱 모바일 감지: 고급 파일 선택 사용');
+            } else {
+                this.showTraditionalFileButton();
+                console.log('📱 모바일 감지: 기본 파일 선택 사용 (Modern API 미지원)');
+            }
         } else {
-            console.log('❌ File System Access API 미지원 - 기본 파일 선택만 사용');
+            // 💻 웹(데스크톱): 기본 파일 선택만 표시
+            this.showTraditionalFileButton();
+            this.modernFileBtn.style.display = 'none';
+            console.log('💻 웹 접속: 기본 파일 선택 사용');
+        }
+    }
+
+    // 기본 파일 선택 버튼 표시
+    showTraditionalFileButton() {
+        const label = document.querySelector('label[for="audioInput"]');
+        if (label) {
+            label.style.display = 'inline-block';
+        }
+    }
+
+    // 기본 파일 선택 버튼 숨기기
+    hideTraditionalFileButton() {
+        const label = document.querySelector('label[for="audioInput"]');
+        if (label) {
+            label.style.display = 'none';
         }
     }
 
