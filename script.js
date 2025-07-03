@@ -24,6 +24,7 @@ class AudioCutter {
     initializeElements() {
         // DOM elements
         this.uploadArea = document.getElementById('uploadArea');
+        this.uploadBtn = document.getElementById('uploadBtn');
         this.audioInput = document.getElementById('audioInput');
         this.audioSection = document.getElementById('audioSection');
         this.fileName = document.getElementById('fileName');
@@ -99,11 +100,25 @@ class AudioCutter {
         // File upload
         this.audioInput.addEventListener('change', (e) => this.handleFileSelect(e));
         
+        // Upload button click
+        this.uploadBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            this.triggerFileSelect();
+        });
+        
         // Upload area click (모바일 친화적)
         this.uploadArea.addEventListener('click', (e) => {
             // 버튼이 아닌 영역을 클릭했을 때만 파일 선택
             if (e.target.tagName !== 'BUTTON' && e.target.tagName !== 'INPUT') {
-                this.audioInput.click();
+                this.triggerFileSelect();
+            }
+        });
+        
+        // 터치 이벤트 지원 (모바일 최적화)
+        this.uploadArea.addEventListener('touchend', (e) => {
+            if (e.target.tagName !== 'BUTTON' && e.target.tagName !== 'INPUT') {
+                e.preventDefault();
+                this.triggerFileSelect();
             }
         });
         
@@ -158,6 +173,32 @@ class AudioCutter {
             // 사용자 상호작용으로 AudioContext 활성화
             await this.ensureAudioContextActive();
             this.processFile(files[0]);
+        }
+    }
+
+    // 모바일에서 파일 선택을 안전하게 처리
+    triggerFileSelect() {
+        try {
+            // 파일 입력 요소 초기화
+            this.audioInput.value = '';
+            
+            // 모바일에서 더 안전한 파일 선택 트리거
+            if (this.audioInput.click) {
+                this.audioInput.click();
+            } else {
+                // 대체 방법
+                const event = new MouseEvent('click', {
+                    view: window,
+                    bubbles: true,
+                    cancelable: true
+                });
+                this.audioInput.dispatchEvent(event);
+            }
+            
+            console.log('파일 선택 대화상자를 열었습니다.');
+        } catch (error) {
+            console.error('파일 선택 트리거 실패:', error);
+            alert('파일 선택에 실패했습니다. 페이지를 새로고침 후 다시 시도해주세요.');
         }
     }
 
