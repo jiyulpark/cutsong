@@ -1,3 +1,26 @@
+// 📱 모바일에서 확실히 작동하는 파일 선택 트리거 (체크포인트)
+document.addEventListener('DOMContentLoaded', function() {
+    // 파일 선택 버튼 클릭 이벤트 (모바일 최적화)
+    const uploadBtn = document.getElementById('uploadBtn');
+    const audioInput = document.getElementById('audioInput');
+    const uploadArea = document.getElementById('uploadArea');
+    
+    if (uploadBtn && audioInput) {
+        uploadBtn.addEventListener('click', function () {
+            audioInput.click();
+        });
+        
+        // 업로드 영역 클릭 시에도 파일 선택 (모바일 친화적)
+        if (uploadArea) {
+            uploadArea.addEventListener('click', function (e) {
+                if (e.target.tagName !== 'BUTTON' && e.target.tagName !== 'INPUT') {
+                    audioInput.click();
+                }
+            });
+        }
+    }
+});
+
 class AudioCutter {
     constructor() {
         this.audioContext = null;
@@ -100,27 +123,7 @@ class AudioCutter {
         // File upload
         this.audioInput.addEventListener('change', (e) => this.handleFileSelect(e));
         
-        // Upload button click
-        this.uploadBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            this.triggerFileSelect();
-        });
-        
-        // Upload area click (모바일 친화적)
-        this.uploadArea.addEventListener('click', (e) => {
-            // 버튼이 아닌 영역을 클릭했을 때만 파일 선택
-            if (e.target.tagName !== 'BUTTON' && e.target.tagName !== 'INPUT') {
-                this.triggerFileSelect();
-            }
-        });
-        
-        // 터치 이벤트 지원 (모바일 최적화)
-        this.uploadArea.addEventListener('touchend', (e) => {
-            if (e.target.tagName !== 'BUTTON' && e.target.tagName !== 'INPUT') {
-                e.preventDefault();
-                this.triggerFileSelect();
-            }
-        });
+        // File input change event only (button clicks handled by global listener)
         
         // Drag and drop
         this.uploadArea.addEventListener('dragover', (e) => this.handleDragOver(e));
@@ -176,29 +179,7 @@ class AudioCutter {
         }
     }
 
-    // 모바일에서 파일 선택을 직접 처리
-    triggerFileSelect() {
-        try {
-            // 파일 입력 요소 초기화
-            this.audioInput.value = '';
-            
-            // 모바일에서 "내 파일" 어플이 바로 열리도록 최적화
-            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-            
-            if (isMobile) {
-                // 모바일에서 파일 선택 대화상자 직접 호출
-                this.audioInput.click();
-            } else {
-                // 데스크톱에서 파일 선택
-                this.audioInput.click();
-            }
-            
-            console.log('파일 선택 대화상자를 열었습니다.');
-        } catch (error) {
-            console.error('파일 선택 실패:', error);
-            alert('파일 선택에 실패했습니다. 페이지를 새로고침 후 다시 시도해주세요.');
-        }
-    }
+
 
     async handleFileSelect(e) {
         const file = e.target.files[0];
