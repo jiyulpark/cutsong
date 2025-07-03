@@ -1,23 +1,15 @@
-// 📱 모바일에서 확실히 작동하는 파일 선택 트리거 (체크포인트)
+// 📱 모바일에서 확실히 작동하는 파일 선택 (label 방식으로 더 이상 JavaScript 불필요)
 document.addEventListener('DOMContentLoaded', function() {
-    // 파일 선택 버튼 클릭 이벤트 (모바일 최적화)
-    const uploadBtn = document.getElementById('uploadBtn');
+    // 업로드 영역 클릭 시에도 파일 선택 (모바일 친화적)
     const audioInput = document.getElementById('audioInput');
     const uploadArea = document.getElementById('uploadArea');
     
-    if (uploadBtn && audioInput) {
-        uploadBtn.addEventListener('click', function () {
-            audioInput.click();
+    if (uploadArea && audioInput) {
+        uploadArea.addEventListener('click', function (e) {
+            if (e.target.tagName !== 'LABEL' && e.target.tagName !== 'INPUT') {
+                audioInput.click();
+            }
         });
-        
-        // 업로드 영역 클릭 시에도 파일 선택 (모바일 친화적)
-        if (uploadArea) {
-            uploadArea.addEventListener('click', function (e) {
-                if (e.target.tagName !== 'BUTTON' && e.target.tagName !== 'INPUT') {
-                    audioInput.click();
-                }
-            });
-        }
     }
 });
 
