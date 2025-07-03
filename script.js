@@ -15,6 +15,8 @@ class AudioCutter {
         this.isResizing = false;
         this.isDrawing = false;
         this.listenersAdded = false;
+        this.fileSelectAttempts = 0;
+        this.maxFileSelectAttempts = 3;
         
         this.initializeElements();
         this.setupEventListeners();
@@ -27,6 +29,7 @@ class AudioCutter {
         this.uploadBtn = document.getElementById('uploadBtn');
         this.audioInput = document.getElementById('audioInput');
         this.audioSection = document.getElementById('audioSection');
+        this.mobileHelp = document.querySelector('.mobile-help');
         this.fileName = document.getElementById('fileName');
         this.duration = document.getElementById('duration');
         this.fileSize = document.getElementById('fileSize');
@@ -182,29 +185,73 @@ class AudioCutter {
             // 파일 입력 요소 초기화
             this.audioInput.value = '';
             
-            // 모바일에서 더 안전한 파일 선택 트리거
-            if (this.audioInput.click) {
-                this.audioInput.click();
+            // 모바일에서 더 강력한 파일 선택 트리거
+            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            
+            if (isMobile) {
+                // 모바일 전용 처리
+                this.audioInput.style.display = 'block';
+                this.audioInput.style.position = 'fixed';
+                this.audioInput.style.top = '50%';
+                this.audioInput.style.left = '50%';
+                this.audioInput.style.transform = 'translate(-50%, -50%)';
+                this.audioInput.style.zIndex = '9999';
+                this.audioInput.style.opacity = '0';
+                this.audioInput.style.width = '1px';
+                this.audioInput.style.height = '1px';
+                
+                // 포커스 후 클릭
+                this.audioInput.focus();
+                setTimeout(() => {
+                    this.audioInput.click();
+                    setTimeout(() => {
+                        this.audioInput.style.display = 'none';
+                    }, 100);
+                }, 100);
             } else {
-                // 대체 방법
-                const event = new MouseEvent('click', {
-                    view: window,
-                    bubbles: true,
-                    cancelable: true
-                });
-                this.audioInput.dispatchEvent(event);
+                // 데스크톱 처리
+                this.audioInput.click();
             }
             
             console.log('파일 선택 대화상자를 열었습니다.');
         } catch (error) {
             console.error('파일 선택 트리거 실패:', error);
-            alert('파일 선택에 실패했습니다. 페이지를 새로고침 후 다시 시도해주세요.');
+            this.showMobileFileSelectHelp();
+        }
+    }
+    
+    // 모바일 파일 선택 도움말 표시
+    showMobileFileSelectHelp() {
+        this.fileSelectAttempts++;
+        
+        // 모바일이고 시도 횟수가 2번 이상이면 도움말 표시
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        
+        if (isMobile && this.fileSelectAttempts >= 2) {
+            this.mobileHelp.style.display = 'block';
+            // 도움말로 스크롤
+            this.mobileHelp.scrollIntoView({ behavior: 'smooth' });
+        } else {
+            // 간단한 알림만 표시
+            const shortMessage = `파일 선택이 어려우시면 다른 브라우저를 사용해보세요.\n\n시도 횟수: ${this.fileSelectAttempts}/${this.maxFileSelectAttempts}`;
+            
+            if (this.fileSelectAttempts >= this.maxFileSelectAttempts) {
+                if (confirm(shortMessage + "\n\n페이지를 새로고침하시겠습니까?")) {
+                    location.reload();
+                }
+            } else {
+                alert(shortMessage);
+            }
         }
     }
 
     async handleFileSelect(e) {
         const file = e.target.files[0];
         if (file) {
+            // 파일 선택 성공 시 시도 횟수 리셋 및 도움말 숨기기
+            this.fileSelectAttempts = 0;
+            this.mobileHelp.style.display = 'none';
+            
             // 사용자 상호작용으로 AudioContext 활성화
             await this.ensureAudioContextActive();
             this.processFile(file);

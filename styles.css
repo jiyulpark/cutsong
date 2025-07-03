@@ -96,6 +96,66 @@ header p {
     display: inline;
 }
 
+/* Mobile Help */
+.mobile-help {
+    margin-top: 20px;
+    padding: 0 20px;
+}
+
+.help-box {
+    background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+    border: 2px solid #f39c12;
+    border-radius: 15px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 8px 20px rgba(243, 156, 18, 0.2);
+}
+
+.help-box h4 {
+    color: #d68910;
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+}
+
+.help-box p {
+    color: #795548;
+    margin-bottom: 15px;
+    font-size: 0.9rem;
+}
+
+.help-box ul {
+    list-style: none;
+    padding: 0;
+    margin: 15px 0;
+}
+
+.help-box li {
+    background: rgba(255, 255, 255, 0.7);
+    margin: 8px 0;
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    color: #5d4037;
+}
+
+.retry-btn {
+    background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 25px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(243, 156, 18, 0.3);
+}
+
+.retry-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(243, 156, 18, 0.4);
+}
+
 .upload-btn {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
@@ -452,6 +512,29 @@ footer p {
     .upload-area:active {
         transform: scale(0.98);
         background: linear-gradient(135deg, #f0f2ff 0%, #e0e5ff 100%);
+    }
+    
+    .mobile-help {
+        display: block !important;
+        margin-top: 15px;
+        padding: 0 10px;
+    }
+    
+    .help-box {
+        padding: 15px;
+    }
+    
+    .help-box h4 {
+        font-size: 1rem;
+    }
+    
+    .help-box p {
+        font-size: 0.85rem;
+    }
+    
+    .help-box li {
+        padding: 8px;
+        font-size: 0.8rem;
     }
     
     .upload-btn {
