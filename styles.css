@@ -96,24 +96,7 @@ header p {
     display: inline;
 }
 
-/* Mobile File Input */
-.mobile-file-input {
-    display: none;
-    width: 100%;
-    padding: 15px;
-    margin-top: 20px;
-    border: 2px dashed #667eea;
-    border-radius: 10px;
-    background: rgba(102, 126, 234, 0.05);
-    font-size: 1rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
 
-.mobile-file-input:hover {
-    border-color: #4a90e2;
-    background: rgba(102, 126, 234, 0.1);
-}
 
 .upload-btn {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -481,22 +464,7 @@ footer p {
         margin-top: 20px;
     }
     
-    /* 모바일에서 파일 input 보이기 */
-    .mobile-file-input {
-        display: block;
-        margin-top: 15px;
-        padding: 20px;
-        font-size: 1.1rem;
-        border: 3px dashed #667eea;
-        border-radius: 15px;
-        background: rgba(102, 126, 234, 0.1);
-        text-align: center;
-    }
-    
-    .mobile-file-input:active {
-        border-color: #4a90e2;
-        background: rgba(102, 126, 234, 0.2);
-    }
+
     
     .upload-note {
         display: block;
@@ -584,25 +552,7 @@ footer p {
         margin-bottom: 30px;
     }
     
-    /* 작은 모바일 화면에서 파일 input 더 크게 */
-    .mobile-file-input {
-        display: block;
-        margin-top: 20px;
-        padding: 25px;
-        font-size: 1.2rem;
-        border: 4px dashed #667eea;
-        border-radius: 20px;
-        background: rgba(102, 126, 234, 0.15);
-        text-align: center;
-        font-weight: 600;
-        color: #667eea;
-    }
-    
-    .mobile-file-input:active {
-        border-color: #4a90e2;
-        background: rgba(102, 126, 234, 0.3);
-        transform: scale(0.95);
-    }
+
     
     .control-btn {
         width: 50px;
